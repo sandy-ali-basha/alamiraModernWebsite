@@ -128,7 +128,7 @@
   "MY POINTS": "نقاطي",
   "pleas Login to view your points": "يرجى تسجيل الدخول لعرض نقاطك",
   "Special Offers": "عروض خاصة",
-  "currency": "دولار",
+  "currency": "يورو",
   "Something went wrong. Please try again.": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
   "Oops...": "عذراً...",
   "error": "خطأ",
@@ -277,10 +277,17 @@
   "PRODUCT CATEGORIES": "فئات المنتجات",
   "WIDGET PRICE FILTER": "فلتر سعر القطعة",
   "We'd Love to Hear From You!": "نود أن نسمع منك!",
-  "Whether you have a question about our products, need help with your order, or just want to say hello, our team is here to assist you!": "سواء كان لديك سؤال حول منتجاتنا ، أو تحتاج إلى مساعدة في طلبك ، أو تريد فقط أن تقول مرحبا ، فإن فريقنا هنا لمساعدتك!"
-,"Les plus belles et dernières tendances à des prix imbattables – Une sélection élégante de robes de soirée et de vêtements de sortie.":" اجمل وأحدث الأزياء بأفضل الأسعار – تشكيلة راقية من فساتين السهرة وملابس الخروج"
-,"Our Contact Info": "معلومات الاتصال الخاصة بنا",
-"Our Social Media":"معلومات الاتصال الخاصة بنا",
-"© 2025 XYZ. All rights reserved.":"© 2025 XYZ. جميع الحقوق محفوظة",
-"Confirm Password":"تأكيد كلمة المرور"
+  "Whether you have a question about our products, need help with your order, or just want to say hello, our team is here to assist you!": "سواء كان لديك سؤال حول منتجاتنا ، أو تحتاج إلى مساعدة في طلبك ، أو تريد فقط أن تقول مرحبا ، فإن فريقنا هنا لمساعدتك!",
+  "Les plus belles et dernières tendances à des prix imbattables – Une sélection élégante de robes de soirée et de vêtements de sortie.": " اجمل وأحدث الأزياء بأفضل الأسعار – تشكيلة راقية من فساتين السهرة وملابس الخروج",
+  "Our Contact Info": "معلومات الاتصال الخاصة بنا",
+  "Our Social Media": "معلومات الاتصال الخاصة بنا",
+  "© 2025 XYZ. All rights reserved.": "© 2025 XYZ. جميع الحقوق محفوظة",
+  "Confirm Password": "تأكيد كلمة المرور",
+  "Brands": "الماركات",
+  "Explore Our Collection": "اكتشف مجموعتنا",
+  "Veiled women's clothing": "ملابس المحجبات",
+  "View More Offers": "عرض المزيد من العروض",
+  "Your shopping Cart is empty": "سلة التسوق الخاصة بك فارغة",
+  "Offers": "العروض",
+  "about us": "من نحن"
 }

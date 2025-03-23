@@ -51,7 +51,6 @@ export default function CategoryCard({ label, link, loading, sx, width,img }) {
                 textAlign: "center",
                 textDecoration: "underline !important",
                 textDecorationColor: "#fff !important",
-                fontSize: 17,
                 p: 0,
               }}
             >

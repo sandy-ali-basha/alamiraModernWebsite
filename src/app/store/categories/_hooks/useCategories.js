@@ -16,7 +16,7 @@ export const useCategories = () => {
   const { data, isLoading } = useAttributes();
   const brandsTabIndex = data?.product_attributes?.length;
   const { t } = useTranslation("index");
-  
+
   const { data: AttrValuesData, isLoading: AttrValuesLoading } = useQuery(
     ["_Attributes_values", selectedCategoryId],
     () =>
@@ -36,6 +36,9 @@ export const useCategories = () => {
     if (data && data.product_attributes && data.product_attributes.length > 0) {
       setSelectedCategoryId(data.product_attributes[0].id);
     }
+    if ( parseInt(localStorage.getItem("categoriesTabIndex"))) {
+      if (value) setSelectedCategoryId(data.product_attributes[ parseInt(localStorage.getItem("categoriesTabIndex"))].id);
+    }
   }, [data]);
 
   const handleChange = (event, newValue) => {
@@ -43,12 +46,12 @@ export const useCategories = () => {
     if (newValue === brandsTabIndex) {
       setFetchBrands(true);
       setSelectedCategoryId(null);
-      console.log(brandsTabIndex, newValue, fetchBrands);
     } else {
       setFetchBrands(false);
       setSelectedCategoryId(data.product_attributes[newValue].id);
     }
   };
+
 
   function TabPanel(props) {
     const { children, value, index, ...other } = props;

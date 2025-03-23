@@ -21,8 +21,10 @@ function Footer() {
   const MenuItems = [
     { href: "/", title: t("Home") },
     { href: "/contact-us", title: t("Contact") },
-    { href: "/store", title: t("Products") },
     { href: "/login", title: t("Log In") },
+    { href: "/store", title: t("Products") },
+    { href: "//store/offers", title: t("Offers") },
+    { href: "/about", title: t("about us") },
   ];
   const { data: termsData, isLoading: isLoadingTerms } = useQuery(
     ["terms"],

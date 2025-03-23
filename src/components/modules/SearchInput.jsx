@@ -9,13 +9,15 @@ import { useSearch } from "store/searchStore";
 import { useNavigate } from "react-router-dom"; // Import navigation
 
 export default function SearchInput({ sx, nav }) {
-  const [searchTerm, setSearchTerm] = useState("");
   const { t } = useTranslation("index");
   const navigate = useNavigate(); // Router navigation function
-  const [searchResults, setSearchResults] = useSearch((state) => [
-    state.results,
-    state.setResults,
-  ]);
+  const [searchResults, setSearchResults, searchTerm, setSearchTerm] =
+    useSearch((state) => [
+      state.results,
+      state.setResults,
+      state.searchTerm,
+      state.setSearchTerm,
+    ]);
 
   // Debounce API calls to avoid excessive requests
   const handleSearch = debounce(async (query) => {
@@ -30,11 +32,9 @@ export default function SearchInput({ sx, nav }) {
       });
 
       setSearchResults(response.data); // Set results
-      console.log("response.data", response.data);
-
       // If search is triggered from the navbar, navigate to /store
       if (nav) {
-        navigate("/store/search");
+        navigate("/store/search/searchval");
       }
     } catch (error) {
       console.error("Error fetching search results", error);
@@ -52,7 +52,7 @@ export default function SearchInput({ sx, nav }) {
           alignItems: "center",
           justifyContent: "center",
           borderColor: "#ddd",
-          p:1
+          p: 1,
         }}
       >
         <SearchIcon sx={{ color: "text.primary" }} />

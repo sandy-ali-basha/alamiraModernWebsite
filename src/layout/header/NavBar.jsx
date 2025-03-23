@@ -4,7 +4,6 @@ import {
   Box,
   Toolbar,
   Typography,
-  Container,
   Button,
   IconButton,
   Tooltip,
@@ -81,46 +80,6 @@ function NavBar() {
       >
         <Box
           sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: 1,
-          }}
-        >
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              display: { xs: "none", md: "flex" },
-              width: { md: "3vw", sm: "6vw", lg: "2vw" },
-            }}
-          >
-            <img alt="logo" src={logo} style={{ width: "inherit" }} />
-          </Typography>
-          <Typography
-            variant="h6"
-            color="primary"
-            sx={{ display: ["none", "block"]}}
-          >
-            {" "}
-            AlAmira Modern
-          </Typography>
-        </Box>
-        <Box sx={{ display: ["none", "flex"] ,width: ["80%", "60%", "50%"],}}>
-          <SearchInput
-            sx={{
-              width:'100%',
-              justifyContent: "flex-start !important",
-            }}
-            nav={true}
-          />
-        </Box>
-
-        <Box
-          sx={{
-            flexGrow: 1,
             alignItems: "center",
             display: { xs: "flex", md: "none" },
           }}
@@ -132,6 +91,43 @@ function NavBar() {
               ...item,
               key: item.id,
             }))}
+          />
+        </Box>
+
+        <Typography
+          variant="body1"
+          noWrap
+          component="a"
+          href="/"
+          sx={{
+            gap: 1,
+            alignItems: "center",
+            justifyContent: "center",
+            display: "flex",
+          }}
+          color="primary"
+        >
+          <Box
+            sx={{
+              width: {
+                md: "3vw",
+                sm: "6vw",
+                lg: "2vw",
+                xs: "5vw",
+              },
+            }}
+          >
+            <img alt="logo" src={logo} style={{ width: "inherit" }} />
+          </Box>
+          {t("AlAmira Modern")}
+        </Typography>
+        <Box sx={{ display: ["none", "flex"], width: ["80%", "60%", "50%"] }}>
+          <SearchInput
+            sx={{
+              width: "100%",
+              justifyContent: "flex-start !important",
+            }}
+            nav={true}
           />
         </Box>
         <Box
@@ -160,6 +156,7 @@ function NavBar() {
               id="basic-button"
               onClick={() => navigate("/contact-us")}
               badgeNumber={2}
+              sx={{ display: ["none", "block"] }}
             >
               <SupportAgent sx={{ color: "text.main" }} />
             </IconButton>
@@ -209,63 +206,66 @@ function NavBar() {
           {t("View All")}
         </Button>
 
-        {data?.product_attributes?.slice(0, 9).map((item, index) => (
-          <>
-            <Button
-              onClick={(event) => handleClick(event, item.id)}
-              key={index}
-            >
-              {item?.title}
-            </Button>
+        {data?.product_attributes?.slice(0, 9).map(
+          (item, index) =>
+            item?.section === "Categories" && (
+              <>
+                <Button
+                  onClick={(event) => handleClick(event, item.id)}
+                  key={index}
+                >
+                  {item?.title}
+                </Button>
 
-            <Popover
-              open={Boolean(anchorEl)}
-              anchorEl={anchorEl}
-              onClose={handleClose}
-              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-              transformOrigin={{ vertical: "top", horizontal: "center" }}
-              PaperProps={{
-                sx: {
-                  width: "80vw",
-                  height: "60vh",
-                  boxShadow: "none", // Removes the shadow
-                  border: 1,
-                },
-              }}
-            >
-              <Box
-                sx={{ p: 2, display: "flex", gap: 2 }}
-                onClick={() => handleClose()}
-              >
-                {AttrValuesLoading ? (
-                  [1, 2, 3, 4, 5, 6].map((idx) => (
-                    <CategoryCard key={idx} loading="true" width="6vw" />
-                  ))
-                ) : AttrValuesData?.product_attributes_values.length > 0 ? (
-                  AttrValuesData?.product_attributes_values?.map(
-                    (item, idx) => (
-                      <CategoryCard
-                        key={idx}
-                        img={item?.image}
-                        label={item.value}
-                        link={selectedCategoryId + "/" + item.id}
-                        width={"6vw"}
-                      />
-                    )
-                  )
-                ) : (
-                  <Typography
-                    sx={{ textAlign: "center", width: "100%", my: 5 }}
-                    variant="body1"
-                    color={"text.secondary"}
+                <Popover
+                  open={Boolean(anchorEl)}
+                  anchorEl={anchorEl}
+                  onClose={handleClose}
+                  anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+                  transformOrigin={{ vertical: "top", horizontal: "center" }}
+                  PaperProps={{
+                    sx: {
+                      width: "80vw",
+                      height: "60vh",
+                      boxShadow: "none", // Removes the shadow
+                      border: 1,
+                    },
+                  }}
+                >
+                  <Box
+                    sx={{ p: 2, display: "flex", gap: 2 }}
+                    onClick={() => handleClose()}
                   >
-                    {t("No Data")} {":("}
-                  </Typography>
-                )}
-              </Box>
-            </Popover>
-          </>
-        ))}
+                    {AttrValuesLoading ? (
+                      [1, 2, 3, 4, 5, 6].map((idx) => (
+                        <CategoryCard key={idx} loading="true" width="6vw" />
+                      ))
+                    ) : AttrValuesData?.product_attributes_values.length > 0 ? (
+                      AttrValuesData?.product_attributes_values?.map(
+                        (item, idx) => (
+                          <CategoryCard
+                            key={idx}
+                            img={item?.image}
+                            label={item.value}
+                            link={selectedCategoryId + "/" + item.id}
+                            width={"6vw"}
+                          />
+                        )
+                      )
+                    ) : (
+                      <Typography
+                        sx={{ textAlign: "center", width: "100%", my: 5 }}
+                        variant="body1"
+                        color={"text.secondary"}
+                      >
+                        {t("No Data")} {":("}
+                      </Typography>
+                    )}
+                  </Box>
+                </Popover>
+              </>
+            )
+        )}
       </Toolbar>
       {nav?.data?.navbar.length > 0 && (
         <Toolbar

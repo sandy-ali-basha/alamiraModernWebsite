@@ -10,9 +10,9 @@ import BestSellers from "components/modules/home/BestSellers";
 import { useHome } from "hooks/home/useHome";
 import LazyImage from "components/modules/LazyImage";
 import Reels from "components/modules/home/Reels";
+import Sale from "components/modules/home/Sale";
 
 export default function Home() {
-  const { t } = useTranslation("index");
 
   const { data, isLoading } = useHome();
 
@@ -27,14 +27,17 @@ export default function Home() {
 
   return (
     <Box sx={{ px: 2, pt: 2 }}>
-      <Grid container spacing={2}>
+        {categories?.map((section) => (
+          <Categories data={section?.items} isLoading={isLoading} />
+        ))}
+      <Grid container spacing={2} sx={{my:2}}>
         <Grid item md="6" sm="12" xs="12">
           {isLoading || !data?.home_sections?.length ? (
             <Skeleton variant="rectangular" width={"100vw"} height={"100vh"} />
           ) : (
             <Swiper
               autoplay={{
-                delay: 2500,
+                delay: 5500,
                 disableOnInteraction: false,
               }}
               lazy={true}
@@ -50,13 +53,11 @@ export default function Home() {
                           <Box
                             sx={{
                               position: "relative",
-                              aspectRatio: { md: "16/9", xs: "9/16" },
+                              aspectRatio: "4/3" ,
                             }}
                           >
                             <LazyImage
-                              src={
-                                "https://img.ltwebstatic.com/images3_ccc/2025/02/14/c6/17395312289ae09bf479f6ea673e84a1fa2448d242_thumbnail_2000x.webp"
-                              }
+                              src={item?.image}
                               alt={`Slide`}
                               style={{
                                 objectFit: "cover",
@@ -103,7 +104,7 @@ export default function Home() {
           ) : (
             <Swiper
               autoplay={{
-                delay: 2500,
+                delay: 5000,
                 disableOnInteraction: false,
               }}
               lazy={true}
@@ -119,7 +120,7 @@ export default function Home() {
                           <Box
                             sx={{
                               position: "relative",
-                              aspectRatio: { md: "16/9", xs: "9/16" },
+                              aspectRatio:  "4/3",
                             }}
                           >
                             <LazyImage
@@ -165,11 +166,9 @@ export default function Home() {
           )}
         </Grid>
       </Grid>
-
-      {categories?.map((section) => (
-        <Categories data={section?.items} isLoading={isLoading} />
-      ))}
-
+      <Box sx={{ p: 2, my: 3 }}>
+        <BestSellers all={true}/>
+      </Box>
       {isLoading || !data?.home_sections?.length ? (
         <Banner data={false} isLoading={isLoading} />
       ) : (
@@ -177,7 +176,8 @@ export default function Home() {
           ?.filter((section) => section.type === "collections")
           .map((section) => <Banner data={section?.items} />)
       )}
-
+      <Sale/>
+      <Reels />
       {banner.map((section, idx) => (
         <OfferSection
           key={idx}
@@ -185,11 +185,9 @@ export default function Home() {
           isLoading={isLoading}
         />
       ))}
-
-      <Reels />
       
-      <Box sx={{ p: 2, my: 3 }}>
-        <BestSellers />
+      <Box sx={{ p: [0,2], my: 3 }}>
+        <BestSellers all={false}/>
       </Box>
     </Box>
   );

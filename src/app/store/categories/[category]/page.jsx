@@ -10,6 +10,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Button,
 } from "@mui/material";
 import ProductCard from "components/modules/ProductCard";
 import SideDrawer from "./_components/Drawer";
@@ -56,10 +57,11 @@ export default function Category() {
     );
   };
 
-  const [searchResults, setSearchResults] = useSearch((state) => [
-    state.results,
-    state.setResults,
-  ]);
+  const [searchResults, setSearchResults] =
+    useSearch((state) => [
+      state.results,
+      state.setResults,
+    ]);
 
   return (
     <Box sx={{ px: { md: 4, xs: 1 } }}>
@@ -131,9 +133,6 @@ export default function Category() {
             width: { xs: "100%", md: `calc(100% - 30%)` },
           }}
         >
-          {/* <Box sx={{ my: 2 }}>
-            <BannerSection banner={banners} />
-          </Box> */}
           <Box
             sx={{
               display: { xs: "none", md: "flex" },
@@ -149,7 +148,7 @@ export default function Category() {
             {isLoading &&
               Array.from({ length: 5 }).map((_, index) => (
                 <Grid item xs={6} sm={6} md={4} lg={3} key={index}>
-                  <ProductCard loading={true}  />
+                  <ProductCard loading={true} />
                 </Grid>
               ))}
 

@@ -25,8 +25,9 @@ export const useCategory = () => {
     },
     min_price: minValue,
     max_price: maxValue,
-    sort:sort
+    sort: sort,
   };
+
 
   const { data, isLoading } = useProducts(body);
 

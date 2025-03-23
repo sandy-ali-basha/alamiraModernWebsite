@@ -97,8 +97,10 @@ export default function ProductCard({
         <Typography variant="body1" color="initial" sx={{ py: 2 }}>
           {loading ? (
             <Skeleton width="80%" height={20} />
-          ) : (
+          ) : productName?.split(" ").length > 5 ? (
             productName?.split(" ").slice(0, 7).join(" ") + " ..."
+          ) : (
+            productName
           )}
         </Typography>
 

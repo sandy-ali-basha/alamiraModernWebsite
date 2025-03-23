@@ -79,30 +79,37 @@ export default function Categories() {
         >
           {isLoading && <Loader />}
           {data &&
-            data?.product_attributes?.map((category, index) => (
-              <Tab
-                sx={{ mx: 2 }}
-                key={category.title}
-                label={category.title}
-                {...a11yProps(index)}
-              />
-            ))}
-          {isLoading || <Tab label={"Brands"} {...a11yProps(brandsTabIndex)} />}
+            data?.product_attributes?.map(
+              (category, index) =>
+                category?.section === "Categories" && (
+                  <Tab
+                    sx={{ mx: [0, 2] }}
+                    key={category.title}
+                    label={category.title}
+                    {...a11yProps(index)}
+                  />
+                )
+            )}
+          {isLoading || (
+            <Tab label={t("Brands")} {...a11yProps(brandsTabIndex)} />
+          )}
         </Tabs>
 
         {AttrValuesLoading ? (
-          <Grid container sx={{ mt: { xs: 2, md: 0 } }} spacing={2}>
+          <Grid container sx={{ mt: { xs: 2, md: 0 } }} spacing={[1,2,3]}>
             {Array.from({ length: 5 }).map((_, index) => (
               <Grid
                 item
-                md={2}
-                xs={6}
-                spacing={{ md: 2, xs: 1, xl: 3 }}
+                xs={4}
+                sm={4}
+                md={3}
+                lg={2}
+                spacing={{ md: 2, xs: 0, sm: 1, xl: 3 }}
                 key={index}
               >
                 <CategoryCard
                   loading={true}
-                  width={"10vw"}
+                  width={window.innerWidth > 768 ? "10vw" : "20vw"}
                 />
               </Grid>
             ))}
@@ -110,23 +117,25 @@ export default function Categories() {
         ) : (
           data?.product_attributes?.map((category, index) => (
             <TabPanel value={value} index={index} key={category.title}>
-              <Grid container spacing={2} sx={{ mt: { xs: 2, md: 0 } }}>
+              <Grid container spacing={[1,2,3]} sx={{ mt: { xs: 2, md: 0 } }}>
                 {AttrValuesData?.product_attributes_values.length > 0 ? (
                   AttrValuesData?.product_attributes_values?.map(
                     (item, idx) => (
                       <Grid
                         item
-                        md={2}
-                        xs={6}
+                        xs={4}
+                        sm={4}
+                        md={3}
+                        lg={2}
+                        spacing={{ md: 2, xs: 0, sm: 1, xl: 3 }}
                         key={idx}
-                        spacing={{ md: 2, xs: 1, xl: 3 }}
                       >
                         <CategoryCard
                           img={item?.image}
                           label={item.value}
                           link={selectedCategoryId + "/" + item.id}
                           loading={AttrValuesLoading}
-                          width={"10vw"}
+                          width={window.innerWidth > 768 ? "10vw" : "20vw"}
                         />
                       </Grid>
                     )
@@ -146,23 +155,26 @@ export default function Categories() {
         )}
 
         <TabPanel value={value} index={brandsTabIndex} key={"Brands"}>
-          <Grid container spacing={2} sx={{ mt: { xs: 2, md: 0 } }}>
+          <Grid container spacing={[1,2,3]} sx={{ mt: { xs: 2, md: 0 } }}>
             {isLoadingBrand ? (
-              <Grid item md={3} xs={6} spacing={{ md: 2, xs: 1, xl: 3 }}>
-                <CategoryCard loading={true}  width={{ md: "10vw", xs: "5vw" }}/>
+              <Grid item  xs={4} sm={4} md={3} lg={2}
+                spacing={{ md: 2, xs: 0,sm:1 ,xl: 3 }}>
+                <CategoryCard
+                  loading={true}
+                  width={{ md: "10vw", xs: "5vw" }}
+                />
               </Grid>
             ) : (
               dataBrand &&
               dataBrand.brands.map((item, idx) => (
                 <Grid
                   item
-                  md={3}
-                  xs={6}
                   key={idx}
-                  spacing={{ md: 2, xs: 1, xl: 3 }}
+                  xs={4} sm={4} md={3} lg={2}
+                  spacing={{ md: 2, xs: 0,sm:1 ,xl: 3 }}
                 >
                   <CategoryCard
-                    img={item.image}
+                    img={item.images[0]}
                     label={item.name}
                     link={"brand/" + item.id}
                     width={"10vw"}

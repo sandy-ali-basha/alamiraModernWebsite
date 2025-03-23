@@ -1,19 +1,23 @@
 import React from "react";
 import { Box, Typography, Skeleton } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination } from "swiper/modules";
+import { Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import LazyImage from "components/modules/LazyImage";
+import { useTranslation } from "react-i18next";
 
 const Categories = ({ data, isLoading }) => {
   const items = isLoading ? Array.from({ length: 6 }) : data || [];
-
+  const { t } = useTranslation("index");
   return (
-    <Box sx={{ py: 4 }}>
+    <Box sx={{ my: 4, px: 1, background: "#efddee", borderRadius: 2 }}>
+      <Typography variant="h5" sx={{ mb: 3, p: 2,textAlign: "center" }}>
+        {t("Explore Our Collection")}
+      </Typography>
       <Swiper
-        modules={[ Pagination]}
+        modules={[Pagination]}
         spaceBetween={16}
         slidesPerView={2}
         breakpoints={{
@@ -36,10 +40,7 @@ const Categories = ({ data, isLoading }) => {
                 }}
               >
                 {isLoading ? (
-                  <Skeleton
-                    variant="circular"
-                    width="100%"
-                  />
+                  <Skeleton variant="circular" width="100%" />
                 ) : (
                   <LazyImage
                     src={category?.image}
@@ -48,7 +49,7 @@ const Categories = ({ data, isLoading }) => {
                       objectFit: "cover",
                       borderRadius: "500px",
                       width: "100%",
-                      aspectRatio:1
+                      aspectRatio: 1,
                     }}
                   />
                 )}
@@ -69,10 +70,10 @@ const Categories = ({ data, isLoading }) => {
                     </>
                   ) : (
                     <>
-                      <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+                      <Typography variant="caption" sx={{ fontWeight: "bold" }}>
                         {category?.title}
                       </Typography>
-                      <Typography variant="body2">
+                      <Typography variant="caption">
                         {category?.description}
                       </Typography>
                     </>

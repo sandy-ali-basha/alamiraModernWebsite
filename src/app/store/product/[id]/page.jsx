@@ -21,13 +21,9 @@ import "swiper/css/navigation";
 import { Navigation } from "swiper/modules";
 import { useTranslation } from "react-i18next";
 import { useProduct } from "./hooks/useProduct";
-import CardShimmer from "components/customs/loaders/CardShimmer";
-import { useNavigate } from "react-router-dom";
 import { useAccourdion } from "./hooks/useAccourdion";
-import { Shimmer } from "react-shimmer";
 import { useSlider } from "./hooks/useSlider";
 import { useAddToCart } from "hooks/cart/useAddToCart";
-import { PaidRounded } from "@mui/icons-material";
 import { useFeatures } from "./hooks/useFeatures";
 
 function Product() {
