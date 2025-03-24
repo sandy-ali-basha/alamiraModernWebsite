@@ -122,9 +122,9 @@ export const useSignUp = () => {
     ];
 
     const data = fields.map(([key, type]) => ({
-      head: key.replace("_", " "),
+      head: t(key),
       type,
-      placeholder: key.replace("_", " "),
+      placeholder: t(key),
       name: key,
       register: key,
       error: key,
@@ -132,7 +132,7 @@ export const useSignUp = () => {
     }));
 
     setDetails(data);
-  }, []);
+  }, [t]);
 
   return {
     register,

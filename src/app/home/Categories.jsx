@@ -13,7 +13,7 @@ const Categories = ({ data, isLoading }) => {
   const { t } = useTranslation("index");
   return (
     <Box sx={{ my: 4, px: 1, background: "#efddee", borderRadius: 2 }}>
-      <Typography variant="h5" sx={{ mb: 3, p: 2,textAlign: "center" }}>
+      <Typography variant="h5" sx={{ mb: 3, p: 2, textAlign: "center" }}>
         {t("Explore Our Collection")}
       </Typography>
       <Swiper
@@ -73,9 +73,12 @@ const Categories = ({ data, isLoading }) => {
                       <Typography variant="caption" sx={{ fontWeight: "bold" }}>
                         {category?.title}
                       </Typography>
-                      <Typography variant="caption">
-                        {category?.description}
-                      </Typography>
+                      <Typography
+                        variant="caption"
+                        dangerouslySetInnerHTML={{
+                          __html: category.description,
+                        }}
+                      ></Typography>
                     </>
                   )}
                 </Box>

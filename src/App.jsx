@@ -55,15 +55,6 @@ function App() {
       <CookieConsent />
       <Routes>
         <Route
-          path="/login"
-          element={
-            <ShouldNotBeLogged>
-              <LoginPage />
-            </ShouldNotBeLogged>
-          }
-        />
-
-        <Route
           path="/profile/:tab"
           element={
             <ShouldBeLogged>
@@ -71,15 +62,6 @@ function App() {
                 <Profile />
               </Layout>
             </ShouldBeLogged>
-          }
-        />
-
-        <Route
-          path="/signup"
-          element={
-            <ShouldNotBeLogged>
-              <SignUp />
-            </ShouldNotBeLogged>
           }
         />
 
@@ -92,6 +74,22 @@ function App() {
             </Layout>
           }
         >
+          <Route
+            path="/signup"
+            element={
+              <ShouldNotBeLogged>
+                <SignUp />
+              </ShouldNotBeLogged>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <ShouldNotBeLogged>
+                <LoginPage />
+              </ShouldNotBeLogged>
+            }
+          />
           <Route path="/forget-password" element={<ForgetPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/" exact element={<Home />} />

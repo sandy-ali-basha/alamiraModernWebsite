@@ -206,7 +206,7 @@ function NavBar() {
           {t("View All")}
         </Button>
 
-        {data?.product_attributes?.slice(0, 9).map(
+        {data?.product_attributes?.slice(0, 8).map(
           (item, index) =>
             item?.section === "Categories" && (
               <>

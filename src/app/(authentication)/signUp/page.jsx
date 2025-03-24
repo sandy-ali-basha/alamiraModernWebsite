@@ -37,7 +37,7 @@ function SignUp() {
         item
         md="6"
         sx={{
-          display: { md: "flex", sm: "none" },
+          display: { md: "flex", xs: "none" },
           alignItems: "center",
           justifyContent: "center",
         }}
@@ -63,7 +63,7 @@ function SignUp() {
             textAlign: "center",
             minHeight: "100vh",
             py: 5,
-            px: 10,
+            px: [2, 5, 10],
             background: "white",
           }}
           component="form"

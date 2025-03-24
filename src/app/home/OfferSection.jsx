@@ -46,8 +46,8 @@ const OfferSection = ({ banners, isLoading }) => {
                     <Typography
                       variant="body2"
                       sx={{ marginTop: "0.5rem", marginBottom: "1rem" }}
+                      dangerouslySetInnerHTML={{ __html: banner.description }}
                     >
-                      {banner.description}
                     </Typography>
                     <Button
                       variant="text"

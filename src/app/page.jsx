@@ -85,8 +85,8 @@ export default function Home() {
                                 variant="body1"
                                 color="white"
                                 sx={{ width: { xs: "90%", md: "70%" } }}
+                                dangerouslySetInnerHTML={{ __html: item.description }}
                               >
-                                {item.description}
                               </Typography>
                             </Box>
                           </Box>
@@ -152,8 +152,8 @@ export default function Home() {
                                 variant="body1"
                                 color="white"
                                 sx={{ width: { xs: "90%", md: "70%" } }}
+                                dangerouslySetInnerHTML={{ __html: item.description }}
                               >
-                                {item.description}
                               </Typography>
                             </Box>
                           </Box>

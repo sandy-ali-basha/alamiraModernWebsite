@@ -11,7 +11,7 @@ export default function Login() {
     useLogin();
 
   return (
-    <Grid container sx={{ overflow: "hidden" }}>
+    <Grid container sx={{ overflow: ["auto", "hidden"] }}>
       <Grid
         item
         md="7"
@@ -36,7 +36,7 @@ export default function Login() {
             alignItems: "stretch",
             flexDirection: "column",
             px: 6,
-            height: "100%",
+            height: ["auto", "100%"],
             mt: [2, 2, 0],
           }}
           component="form"
