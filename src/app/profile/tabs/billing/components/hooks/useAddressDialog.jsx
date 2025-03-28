@@ -11,7 +11,6 @@ export const useAddressDialog = ({ handleClose }) => {
 
   // Schema validation using Yup
   const schema = yup.object().shape({
-    title: yup.string().required(t("Title is required")),
     first_name: yup.string().required(t("First name is required")),
     last_name: yup.string().required(t("Last name is required")),
     contact_email: yup
@@ -19,6 +18,7 @@ export const useAddressDialog = ({ handleClose }) => {
       .email(t("Invalid email"))
       .required(t("Email is required")),
     city: yup.string().required(t("City is required")),
+    postcode: yup.string().required(t("postcode is required")),
     state: yup.string().required(t("State is required")),
     line_one: yup.string().required(t("Address is required")),
     delivery_instructions: yup.string(),
@@ -33,8 +33,13 @@ export const useAddressDialog = ({ handleClose }) => {
   };
 
   const formOptions = { resolver: yupResolver(schema) };
-  const { register, handleSubmit, formState, control } = useForm(formOptions);
-  const { errors } = formState;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    control,
+  } = useForm(formOptions);
+
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation(
@@ -66,8 +71,9 @@ export const useAddressDialog = ({ handleClose }) => {
 
     const newInput = {
       ...input,
+      title: "MR",
       user_id: userData.user_id,
-      country_id:228,
+      country_id: 228,
       billing_default: checked,
       shipping_default: checked,
     };

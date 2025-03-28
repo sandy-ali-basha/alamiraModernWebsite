@@ -13,7 +13,6 @@ import {
   useTheme,
   IconButton,
 } from "@mui/material";
-import LocationOnRoundedIcon from "@mui/icons-material/LocationOnRounded";
 import "react-credit-cards/es/styles-compiled.css";
 import { useAddresses } from "hooks/addresses/useAddresses";
 import { useTranslation } from "react-i18next";
@@ -87,13 +86,15 @@ const BillingAddressCard = () => {
                     px: [0, 1, 2],
                     py: 1,
                     m: 1,
-                    backgroundColor: "background.paper",
+                    backgroundColor: item?.billing_default
+                      ? "primary.lighter"
+                      : "background.paper",
                   }}
                 >
                   <Grid
                     item
-                    xs="3"
-                    md="2"
+                    xs={3}
+                    md={2}
                     display="flex"
                     flexDirection="column"
                     justifyContent="center"
@@ -101,15 +102,18 @@ const BillingAddressCard = () => {
                     sx={{ px: [0, 1, 2], gap: 2 }}
                   >
                     <LocationOnOutlined
-                      sx={{ fontSize: ["2rem", "2rem", "3rem"] }}
-                      color="primary.light"
+                      sx={{
+                        fontSize: ["2rem", "2rem", "3rem"],
+                        color: "primary.light",
+                      }}
                     />
+
                     {item?.billing_default && (
                       <Chip
                         color="info"
                         label={t("primary")}
                         variant={"outlined"}
-                        sx={{  borderRadius: "0" }}
+                        sx={{ borderRadius: "0" }}
                       />
                     )}
                   </Grid>
@@ -121,13 +125,13 @@ const BillingAddressCard = () => {
                         mb: 1,
                       }}
                     >
-                      <Typography variant={'h5'}>
+                      <Typography variant={"h5"}>
                         {item?.title} {item.first_name} {item.last_name}
                       </Typography>
                       <Box
                         sx={{
                           display: "flex",
-                          flexDirection: ["row", "column"],
+                          flexDirection: { xs: "row", sm: "column" },
                         }}
                       >
                         {isMobile ? (

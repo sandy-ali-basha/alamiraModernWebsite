@@ -1,0 +1,131 @@
+import { useState } from "react";
+import {
+  Button,
+  Chip,
+  Stack,
+  CircularProgress,
+  Typography,
+} from "@mui/material";
+import { useAddToCart } from "hooks/cart/useAddToCart";
+import Swal from "sweetalert2";
+import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
+import { useParams } from "react-router-dom";
+
+const ProductVariants = ({ variants }) => {
+  const params = useParams();
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [selectedSize, setSelectedSize] = useState(null);
+  const { handleAddToCart, loadingCart } = useAddToCart();
+  const [shake, setShake] = useState(false);
+  const { t } = useTranslation("index");
+
+  // Extract unique colors
+  const colors = [...new Set(variants.map((v) => v.options[0]))];
+
+  // Get sizes for the selected color
+  const sizes = selectedColor
+    ? variants
+        .filter((v) => v.options[0] === selectedColor)
+        .map((v) => v.options[1])
+    : [];
+
+  const handleCartClick = () => {
+    if (!selectedColor || !selectedSize) {
+      setShake(true);
+      Swal.fire({
+        icon: "warning",
+        title: t("Please select a color and size"),
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+      });
+      setTimeout(() => setShake(false), 500);
+      return;
+    }
+
+    const cartData = {
+      product_id: params.id,
+      options: [selectedSize, selectedColor],
+    };
+
+    handleAddToCart(cartData);
+  };
+
+  return (
+    <>
+      <motion.div
+        animate={shake ? { x: [-10, 10, -10, 10, 0] } : {}}
+        transition={{ duration: 0.6 }}
+      >
+        <Typography
+          sx={{ py: 2 }}
+          color="initial"
+          variant="body1"
+          fontWeight="bold"
+        >
+          {t("Select Color")}:
+        </Typography>
+        <Stack direction="row" spacing={1}>
+          {colors.map((color) => (
+            <Chip
+              key={color}
+              label={color}
+              onClick={() => {
+                setSelectedColor(color);
+                setSelectedSize(null);
+              }}
+              sx={{ px: "1", borderRadius: "0px" }}
+              color={selectedColor === color ? "primary" : "default"}
+            />
+          ))}
+        </Stack>
+
+        <Typography
+          sx={{ py: 2 }}
+          color="initial"
+          variant="body1"
+          fontWeight="bold"
+        >
+          {t("Select Size")}:
+        </Typography>
+        {sizes.length > 0 ? (
+          <Stack direction="row" spacing={1}>
+            {sizes.map((size) => (
+              <Chip
+                key={size}
+                label={size}
+                onClick={() => setSelectedSize(size)}
+                color={selectedSize === size ? "primary" : "default"}
+                sx={{ px: "1", borderRadius: "0px" }}
+              />
+            ))}
+          </Stack>
+        ) : (
+          <Typography color="text.secondary" variant="body1">
+            {t("select color first")}
+          </Typography>
+        )}
+      </motion.div>
+      <Button
+        size="large"
+        sx={{ width: "90%", p: 1, mt: 4 }}
+        variant="outlined"
+        color="secondary"
+        onClick={handleCartClick}
+        disabled={loadingCart}
+      >
+        {loadingCart ? (
+          <CircularProgress
+            style={{ height: "auto", width: "1.5rem", color: "secondary.main" }}
+          />
+        ) : (
+          <Typography>{t("Add To Cart")}</Typography>
+        )}
+      </Button>
+    </>
+  );
+};
+
+export default ProductVariants;

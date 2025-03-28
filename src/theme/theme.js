@@ -6,6 +6,7 @@ const theme = createTheme({
       main: "#630661", // Main accent color
       red: "#441f3e",
       light: "#8b468a",
+      lighter: "#ebbeeb",
     },
     secondary: {
       main: "#36332F", // Supporting secondary color

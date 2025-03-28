@@ -59,8 +59,13 @@ const EditDialog = ({ open, handleClose, id }) => {
 
   useEffect(() => {
     setChecked(data?.data?.shipping_default);
-    setValue("first_name",data?.data?.first_name)
-  }, [data?.data?.first_name, data?.data?.shipping_default, setChecked, setValue]);
+    setValue("first_name", data?.data?.first_name);
+  }, [
+    data?.data?.first_name,
+    data?.data?.shipping_default,
+    setChecked,
+    setValue,
+  ]);
 
   return (
     <Dialog
@@ -93,43 +98,13 @@ const EditDialog = ({ open, handleClose, id }) => {
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    label="First Name"
+                    label={t("First Name")}
                     variant="outlined"
                     fullWidth
                     error={!!errors.first_name}
-                    helpertext={
-                      errors.first_name ? errors.first_name.message : ""
+                    helperText={
+                      errors?.first_name ? errors?.first_name.message : ""
                     }
-                    defaultValue={data?.data?.first_name}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <Controller
-                            name="title"
-                            control={control}
-                            defaultValue="Mr"
-                            render={({ field: titleField }) => (
-                              <Select
-                                {...titleField}
-                                displayEmpty
-                                variant="standard"
-                                disableUnderline
-                                defaultValue={data?.data?.title}
-                                sx={{ mr: 1, minWidth: 60 }}
-                                error={!!errors.title}
-                                helpertext={
-                                  errors.title ? errors.title.message : ""
-                                }
-                              >
-                                <MenuItem value="Mr">Mr</MenuItem>
-                                <MenuItem value="Mrs">Mrs</MenuItem>
-                                <MenuItem value="Ms">Ms</MenuItem>
-                              </Select>
-                            )}
-                          />
-                        </InputAdornment>
-                      ),
-                    }}
                   />
                 )}
               />
@@ -138,8 +113,8 @@ const EditDialog = ({ open, handleClose, id }) => {
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
-                label="Last Name"
-                placeholder="Last name"
+                label={t("Last Name")}
+                placeholder={t("Last name")}
                 {...register("last_name")}
                 error={!!errors.last_name}
                 helpertext={errors.last_name ? errors.last_name.message : ""}
@@ -153,7 +128,7 @@ const EditDialog = ({ open, handleClose, id }) => {
                   <Select
                     sx={{ borderColor: "text.main" }}
                     {...register("city")}
-                    label="city"
+                    label={t("city")}
                     value={watch("city") || data?.data?.city || ""} // Watch form value or use default from data
                     onChange={(e) => setValue("city", e.target.value)} // Update form state on selection
                   >
@@ -174,12 +149,23 @@ const EditDialog = ({ open, handleClose, id }) => {
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
-                label="State"
-                placeholder="State"
+                label={t("State")}
+                placeholder={t("State")}
                 {...register("state")}
                 error={!!errors.state}
                 helpertext={errors.state ? errors.state.message : ""}
                 defaultValue={data?.data?.state}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                fullWidth
+                label={t("postcode")}
+                placeholder={t("postcode")}
+                {...register("postcode")}
+                error={!!errors.postcode}
+                helpertext={errors.postcode ? errors.postcode.message : ""}
+                defaultValue={data?.data?.postcode}
               />
             </Grid>
             <Grid item xs={12}>
@@ -197,7 +183,7 @@ const EditDialog = ({ open, handleClose, id }) => {
             <Grid item xs={12} sm={6}>
               <TextField
                 fullWidth
-                label="Contact Email"
+                label={t("Contact Email")}
                 placeholder="jone@mail.com"
                 {...register("contact_email")}
                 error={!!errors.contact_email}
@@ -211,7 +197,7 @@ const EditDialog = ({ open, handleClose, id }) => {
               <TextField
                 fullWidth
                 type="number"
-                label="Phone Number"
+                label={t("Phone Number")}
                 placeholder="012 345 1111"
                 {...register("contact_phone")}
                 error={!!errors.contact_phone}
@@ -230,8 +216,8 @@ const EditDialog = ({ open, handleClose, id }) => {
             <Grid item xs={12}>
               <TextField
                 fullWidth
-                label="Delivery Instructions"
-                placeholder="Please leave the package at the door"
+                label={t("Delivery Instructions")}
+                placeholder={t("Please leave the package at the door")}
                 {...register("delivery_instructions")}
                 error={!!errors.delivery_instructions}
                 helpertext={

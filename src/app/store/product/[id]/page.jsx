@@ -1,14 +1,11 @@
 "use client";
 import React from "react";
-// import { Container, Grid, Box } from "@mui/material";
 import {
   Box,
   Chip,
   Container,
   Grid,
   Typography,
-  Button,
-  CircularProgress,
   Skeleton,
 } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -23,20 +20,17 @@ import { useTranslation } from "react-i18next";
 import { useProduct } from "./hooks/useProduct";
 import { useAccourdion } from "./hooks/useAccourdion";
 import { useSlider } from "./hooks/useSlider";
-import { useAddToCart } from "hooks/cart/useAddToCart";
 import { useFeatures } from "./hooks/useFeatures";
+import ProductVariants from "./_components/ProductVariants";
 
 function Product() {
   const theme = useTheme();
-
   const { t } = useTranslation("index");
   const { data, isLoading } = useProduct();
   const { data: Acc, isLoading: AccLoading } = useAccourdion();
   const { data: Slider, isLoading: SliderLoading } = useSlider();
   const { data: features, isLoading: featuresLoading } = useFeatures();
-  const { handleAddToCart, loadingCart } = useAddToCart();
 
-  // const navigate = useNavigate();
   return (
     <Container sx={{ mt: 5 }}>
       <Grid container>
@@ -93,17 +87,19 @@ function Product() {
 
           <Box
             sx={{
-              display: "flex",
               my: 1,
               px: 2,
-              flexWrap: "wrap",
-              gap: 1,
               alignItems: "center",
             }}
           >
-            <Typography variant="h5" color="text.primary">
+            <Typography
+              variant="body1"
+              sx={{ fontWeight: "bold" }}
+              color="text.primary"
+            >
               {isLoading ? <Skeleton width="20%" /> : t("Price")}:
             </Typography>
+
             {isLoading ? (
               <Skeleton width="50%" />
             ) : (
@@ -120,6 +116,7 @@ function Product() {
                 </Typography>
               )
             )}
+
             {isLoading ? (
               <Skeleton width="60%" height={30} />
             ) : (
@@ -133,6 +130,7 @@ function Product() {
                 </Typography>
               )
             )}
+
             {data?.data?.compare_price > 0 && (
               <Chip
                 color="success"
@@ -143,7 +141,6 @@ function Product() {
               />
             )}{" "}
           </Box>
-          <hr />
           <Box sx={{ display: "flex", my: 1, px: 2, flexWrap: "wrap" }}>
             <Box>
               {/* {isLoading ? (
@@ -222,15 +219,11 @@ function Product() {
               </>
             ) : (
               <>
-                <Typography
-                  sx={{ px: 2 }}
-                  variant="initial"
-                  fontWeight={"bold"}
-                >
-                  {t("Description")}
+                <Typography fontWeight={"bold"} variant="body1">
+                  {t("Description")}:
                 </Typography>
                 <Typography
-                  variant="initial"
+                  variant="body1"
                   sx={{ wordBreak: "break-all" }}
                   dangerouslySetInnerHTML={{ __html: data?.data?.description }}
                 ></Typography>
@@ -281,25 +274,10 @@ function Product() {
                 ))}
             </Swiper>
           </Box>
-          {data?.data?.purchasable === "always" && (
-            <Box display="flex" alignItems="center" justifyContent="center">
-              <Button
-                size="large"
-                sx={{ width: "90%", p: 1, mt: 2 }}
-                variant="outlined"
-                color="secondary"
-                onClick={() => handleAddToCart(data?.data?.id)}
-                disabled={isLoading}
-              >
-                {loadingCart ? (
-                  <CircularProgress
-                    style={{ height: "auto", width: "1.5rem", color: "secondary.main" }}
-                  />
-                ) : (
-                  <Typography> {t("Add To Cart")}</Typography>
-                )}
-              </Button>
-            </Box>
+          {isLoading ? (
+            <Skeleton width="80%" height={20} />
+          ) : (
+            <ProductVariants variants={data?.data?.variants} />
           )}
         </Grid>
       </Grid>

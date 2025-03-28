@@ -289,5 +289,13 @@
   "View More Offers": "عرض المزيد من العروض",
   "Your shopping Cart is empty": "سلة التسوق الخاصة بك فارغة",
   "Offers": "العروض",
-  "about us": "من نحن"
+  "about us": "من نحن",
+  "Select Size":"اختر المقاس",
+  "Select Color":"اختر اللون",
+  "Please select a color and size":"يرجى اختيار اللون والمقاس",
+"Error":"خطأ",
+"select color first":"حدد اللون أولا",
+"Postcode": "الرمز البريدي",
+"postcode is required": "الرمز البريدي مطلوب",
+"Default address for shipping": "العنوان الافتراضي للشحن"
 }

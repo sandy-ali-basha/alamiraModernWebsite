@@ -4,14 +4,12 @@ import {
   Card,
   CardContent,
   CardMedia,
-  CircularProgress,
   Skeleton,
   Typography,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import defaultImg from "assets/images/defaultImg.jpg";
 import { useTranslation } from "react-i18next";
-import { useAddToCart } from "hooks/cart/useAddToCart";
 
 export default function ProductCard({
   productName,
@@ -25,7 +23,7 @@ export default function ProductCard({
   category,
   quantity,
 }) {
-  const { handleAddToCart, loadingCart } = useAddToCart();
+  const navigate = useNavigate();
   const { t } = useTranslation("index");
   const [hovered, setHovered] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
@@ -142,7 +140,7 @@ export default function ProductCard({
           </Box>
 
           {/* Add to Cart - Always visible on touch devices */}
-          {purchasable && !loading && (
+          {!loading && (
             <Box
               className="add-to-cart"
               sx={{
@@ -153,15 +151,11 @@ export default function ProductCard({
                 cursor: "pointer",
                 mt: isTouchDevice ? 1 : 0, // Adds space below price on touch devices
               }}
-              onClick={() => handleAddToCart(id)}
+              onClick={() => navigate(`/store/product/${id}/${productName}`)}
             >
-              {loadingCart ? (
-                <CircularProgress size={20} />
-              ) : (
-                <Typography sx={{ color: "primary.red", fontWeight: "bold" }}>
-                  {t("Add To Cart")}
-                </Typography>
-              )}
+              <Typography sx={{ color: "primary.red", fontWeight: "bold" }}>
+                {t("Add To Cart")}
+              </Typography>
             </Box>
           )}
         </Box>

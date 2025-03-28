@@ -7,24 +7,16 @@ export const useAddToCart = () => {
   const { t } = useTranslation("index");
   const [loadingCart, setLoading] = useState(false);
   const cart_id = localStorage.getItem("cart_id");
-  
-  const handleAddToCart = (id) => {
-    const data = {
-      products: {
-        [id]: {
-          qty: 1,
-        },
-      },
-    };
 
+  const handleAddToCart = (data) => {
     setLoading(true);
     _cart
       .AddToCart({ data, cart_id })
       .then((res) => {
-        if (!cart_id) localStorage.setItem("cart_id", res?.data?.id);
-
         if (res?.code === 200) {
-          const currentCartCount = parseInt(localStorage.getItem("cart_count")) || 0;
+          if (!cart_id) localStorage.setItem("cart_id", res?.data?.id);
+          const currentCartCount =
+            parseInt(localStorage.getItem("cart_count")) || 0;
           localStorage.setItem("cart_count", currentCartCount + 1);
           Swal.fire({
             icon: "success",
@@ -46,7 +38,7 @@ export const useAddToCart = () => {
           }
           Swal.fire({
             icon: "error",
-            title: "Error",
+            title: t("Error"),
             text: errorMessage,
             toast: true,
             position: "bottom-end",

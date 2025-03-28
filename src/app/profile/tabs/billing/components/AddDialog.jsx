@@ -6,7 +6,6 @@ import {
   DialogContent,
   DialogActions,
   TextField,
-  InputAdornment,
   Select,
   MenuItem,
   Button,
@@ -33,10 +32,11 @@ const AddDialog = ({ open, handleClose }) => {
     control,
     t,
   } = useAddressDialog({ handleClose });
+
   const [cities, setCiteies] = useState();
   useMemo(() => {
     _cities.index().then((response) => {
-      if (response.code === 200) {
+      if (response?.code === 200) {
         setCiteies(response.data);
       }
     });
@@ -62,51 +62,23 @@ const AddDialog = ({ open, handleClose }) => {
       <DialogContent>
         <Grid container spacing={2} sx={{ pt: 1 }}>
           <Grid item xs={12} sm={6}>
-            <Controller
-              name="first_name"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label={t("First Name")}
-                  variant="outlined"
-                  fullWidth
-                  error={!!errors.first_name}
-                  helperText={
-                    errors.first_name ? errors.first_name.message : ""
-                  }
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <Controller
-                          name="title"
-                          control={control}
-                          defaultValue="Mr"
-                          render={({ field: titleField }) => (
-                            <Select
-                              {...titleField}
-                              displayEmpty
-                              variant="standard"
-                              disableUnderline
-                              sx={{ mr: 1, minWidth: 60 }}
-                              error={!!errors.title}
-                              helperText={
-                                errors.title ? errors.title.message : ""
-                              }
-                            >
-                              <MenuItem value="Mr">{t("Mr")}</MenuItem>
-                              <MenuItem value="Mrs">{t("Mrs")}</MenuItem>
-                              <MenuItem value="Ms">{t("Ms")}</MenuItem>
-                              <MenuItem value="Dr">{t("Dr")}</MenuItem>
-                            </Select>
-                          )}
-                        />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-              )}
-            />
+              {/* First Name Input */}
+              <Controller
+                name="first_name"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label={t("First Name")}
+                    variant="outlined"
+                    fullWidth
+                    error={!!errors.first_name}
+                    helperText={
+                      errors?.first_name ? errors?.first_name.message : ""
+                    }
+                  />
+                )}
+              />
           </Grid>
 
           <Grid item xs={12} sm={6}>
@@ -119,6 +91,7 @@ const AddDialog = ({ open, handleClose }) => {
               helperText={errors.last_name ? errors.last_name.message : ""}
             />
           </Grid>
+
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
@@ -132,12 +105,12 @@ const AddDialog = ({ open, handleClose }) => {
             />
           </Grid>
 
-          <Grid item xs={12} sx={{ p: "10px" }}>
+          <Grid item xs={12} sm={6} sx={{ p: "10px" }}>
             {cities ? (
               <FormControl fullWidth>
-              <InputLabel sx={{ color: "text.main" }}>{t("City")}</InputLabel>
+                <InputLabel sx={{ color: "text.main" }}>{t("City")}</InputLabel>
                 <Select
-                fullWidth
+                  fullWidth
                   sx={{ color: "text.main", borderColor: "text.main" }}
                   {...register("city")}
                   label="city"
@@ -156,6 +129,7 @@ const AddDialog = ({ open, handleClose }) => {
               </Typography>
             )}
           </Grid>
+
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
@@ -166,7 +140,18 @@ const AddDialog = ({ open, handleClose }) => {
               helperText={errors.state ? errors.state.message : ""}
             />
           </Grid>
-        
+
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label={t("postcode")}
+              placeholder="postcode"
+              {...register("postcode")}
+              error={!!errors.postcode}
+              helperText={errors.postcode ? errors.postcode.message : ""}
+            />
+          </Grid>
+
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
@@ -178,13 +163,14 @@ const AddDialog = ({ open, handleClose }) => {
               helperText={
                 errors.contact_phone ? errors.contact_phone.message : ""
               }
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">TR (+90)</InputAdornment>
-                ),
-              }}
+              // InputProps={{
+              //   startAdornment: (
+              //     <InputAdornment position="start">TR (+90)</InputAdornment>
+              //   ),
+              // }}
             />
           </Grid>
+
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -195,6 +181,7 @@ const AddDialog = ({ open, handleClose }) => {
               helperText={errors.line_one ? errors.line_one.message : ""}
             />
           </Grid>
+
           <Grid item xs={12}>
             <TextField
               fullWidth

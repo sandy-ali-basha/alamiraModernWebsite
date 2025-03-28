@@ -27,7 +27,6 @@ import { useAddresses } from "hooks/addresses/useAddresses";
 import Loader from "components/modules/Loader";
 import { useTranslation } from "react-i18next";
 import { useCart } from "hooks/cart/useCart";
-import CardShimmer from "components/customs/loaders/CardShimmer";
 import { AddressStore } from "store/shippingStore";
 
 const StepAddress = ({
@@ -38,7 +37,7 @@ const StepAddress = ({
   // const [selectedIconRadio, setSelectedIconRadio] = useState("standard");
   const { data = { addresses: [] }, isLoading } = useAddresses();
   const { t } = useTranslation("index");
-
+  
   const addresses = data?.addresses || [];
 
   const addressData = addresses.map((address, index) => ({
@@ -182,8 +181,12 @@ const StepAddress = ({
                               to={`/store/product/${item?.id}/${item.name}`}
                               style={{ textDecoration: "none" }}
                             >
-                              <ListItemText primary={item?.name.split(" ").slice(0, 7).join(" ") +
-                                  " ..."} />
+                              <ListItemText
+                                primary={
+                                  item?.name.split(" ").slice(0, 7).join(" ") +
+                                  " ..."
+                                }
+                              />
                             </Link>
 
                             <Box sx={{ display: "flex" }}>
@@ -218,8 +221,7 @@ const StepAddress = ({
                 >
                   <Typography>{t("Sub Total")}</Typography>
                   <Typography sx={{ color: "text.secondary" }}>
-                    {(cartData?.data?.sub_total / 1000).toFixed(3)}{" "}
-                    {t("currency")}
+                    {cartData?.data?.sub_total} {t("currency")}
                   </Typography>
                 </Box>
                 <Box
@@ -240,8 +242,7 @@ const StepAddress = ({
                   >
                     {shippingAddress?.shipping_price > 0 && (
                       <div>
-                        {(shippingAddress?.shipping_price / 1000).toFixed(3)}
-                        {t("currency")}
+                        {shippingAddress?.shipping_price} {t("currency")}
                       </div>
                     )}
                     {shippingAddress?.shipping_price === 0 && (

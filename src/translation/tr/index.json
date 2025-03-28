@@ -284,5 +284,11 @@
   "Veiled women's clothing": " Örtülü kadın giyimi",
   "View More Offers": "Afarların Görünümü",
   "AlAmira Moderne": "Al Amira Modern",
-  "Your shopping Cart is empty": "Alışveriş Sepetiniz Boş"
-}
+  "Your shopping Cart is empty": "Alışveriş Sepetiniz Boş",
+  "Select Size": "Boyut Seçin",
+  "Select Color": "Renk Seçin",
+  "Please select a color and size": "Lütfen bir renk ve boyut seçin",
+  "Error":"Hata",
+  "Postcode": "Posta Kodu",
+  "postcode is required": "Posta kodu gereklidir",
+  "Default address for shipping": "Varsayılan gönderim adresi"}

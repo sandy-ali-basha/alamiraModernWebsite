@@ -70,6 +70,7 @@ const StepPayment = ({ handleNext }) => {
   const { data: cartData, isLoading: cartIsLoading } = useCart(cart_id);
 
   const shippingAddress = AddressStore((state) => state.shippingAddress);
+
   const [openFade, setOpenFade] = useState(true);
   const [openCollapse, setOpenCollapse] = useState(true);
   useEffect(() => {
@@ -125,7 +126,7 @@ const StepPayment = ({ handleNext }) => {
               aria-label="customized tabs example"
             >
               {/* <Tab value="fib" label={t("FIB")} /> */}
-              <Tab value="credit-card" label="Card"  />
+              <Tab value="credit-card" label="Card" />
               <Tab value="cash-in-hand" label={t("Cash On Delivery")} />
               <Tab value="gc" label={t("Gift Card")} />
             </CustomTabList>
@@ -185,7 +186,6 @@ const StepPayment = ({ handleNext }) => {
                   </form>
                 </TabPanel>
                 <TabPanel value="cash-in-hand" sx={{ px: 3 }}>
-                  
                   <Typography sx={{ mb: 4 }}>
                     {t(
                       "Cash on Delivery is a type of payment method where the recipient make payment for the order at the time of delivery rather than in advance."
@@ -348,9 +348,32 @@ const StepPayment = ({ handleNext }) => {
                   {t("Deliver to")}:
                 </Typography>
                 <Typography sx={{ fontWeight: 500 }}>
-                  {shippingAddress?.title}
+                  {shippingAddress?.first_name} {shippingAddress?.last_name}
                 </Typography>
-                {shippingAddress?.content}
+                <Box
+                  sx={{
+                    mt: 0.5,
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <Typography variant="body2" sx={{ mb: "auto" }}>
+                    {shippingAddress.city}, {shippingAddress.state},{" "}
+                    {shippingAddress.country}
+                    <br />
+                    {shippingAddress.line_one}
+                    <br />
+                    {shippingAddress.postcode &&
+                      t("Postcode")`: ${shippingAddress.postcode}.`}
+                    <br />
+                    {shippingAddress.contact_phone &&
+                      t("Mobile")`: ${shippingAddress.contact_phone}.`}
+                    <br />
+                    {shippingAddress.contact_phone &&
+                      t("Email")`: ${shippingAddress.contact_mail}.`}
+                  </Typography>
+                </Box>
               </Box>
             </CardContent>
           </Box>
