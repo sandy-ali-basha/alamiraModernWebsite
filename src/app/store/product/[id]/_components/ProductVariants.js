@@ -21,14 +21,29 @@ const ProductVariants = ({ variants }) => {
   const { t } = useTranslation("index");
 
   // Extract unique colors
-  const colors = [...new Set(variants.map((v) => v.options[0]))];
+  const colors = [
+    ...new Set(
+      variants.map((v) => (v.options > 0 ? v.options[0].name.ar : ""))
+    ),
+  ];
 
-  // Get sizes for the selected color
+  // Get available sizes for the selected color
   const sizes = selectedColor
-    ? variants
-        .filter((v) => v.options[0] === selectedColor)
-        .map((v) => v.options[1])
+    ? [
+        ...new Set(
+          variants
+            .filter((v) => v.options[0].name.ar === selectedColor)
+            .map((v) => v.options[1].name.ar)
+        ),
+      ]
     : [];
+
+  // Get the matching variant ID
+  const selectedVariant = variants.find(
+    (v) =>
+      v.options[0].name.ar === selectedColor &&
+      v.options[1].name.ar === selectedSize
+  );
 
   const handleCartClick = () => {
     if (!selectedColor || !selectedSize) {
@@ -47,12 +62,18 @@ const ProductVariants = ({ variants }) => {
 
     const cartData = {
       product_id: params.id,
-      options: [selectedSize, selectedColor],
+      options: [
+        {
+          size: [selectedVariant.options[0].id],
+          color: [selectedVariant.options[1].id],
+        },
+      ],
     };
 
     handleAddToCart(cartData);
   };
 
+  console.log("selectedVariant", selectedVariant);
   return (
     <>
       <motion.div

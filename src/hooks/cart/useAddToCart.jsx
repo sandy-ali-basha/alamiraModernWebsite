@@ -12,7 +12,7 @@ export const useAddToCart = () => {
     setLoading(true);
     _cart
       .AddToCart({ data, cart_id })
-      .then((res) => {
+      .then((res) => { 
         if (res?.code === 200) {
           if (!cart_id) localStorage.setItem("cart_id", res?.data?.id);
           const currentCartCount =
