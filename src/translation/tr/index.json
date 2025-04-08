@@ -291,4 +291,12 @@
   "Error":"Hata",
   "Postcode": "Posta Kodu",
   "postcode is required": "Posta kodu gereklidir",
-  "Default address for shipping": "Varsayılan gönderim adresi"}
+  "Default address for shipping": "Varsayılan gönderim adresi",
+  "Okay": "Tamam",
+  "Thank you for your purchase. Your order has been confirmed and is now being processed.": "Satın aldığınız için teşekkür ederiz. Siparişiniz onaylandı ve işleniyor.",
+  "Continue Shopping": "Alışverişe Devam Et",
+  "Order Placed Successfully!": "Sipariş Başarıyla Verildi!",
+  "Payment Failed": "Ödeme Başarısız",
+  "Something went wrong while processing your payment. Please try again.": "Ödemeniz işlenirken bir şeyler ters gitti. Lütfen tekrar deneyin.",
+  "Close": "Kapat",
+"You will be redirected to PayPal to complete your purchase securely.":"Güvenli bir şekilde satın alma işleminizi tamamlamak için PayPal'a yönlendirileceksiniz."}

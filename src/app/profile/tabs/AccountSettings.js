@@ -9,13 +9,11 @@ import {
   Card,
   Container,
   useMediaQuery,
-  styled,
 } from "@mui/material";
 import TabPanel from "@mui/lab/TabPanel";
 import TabContext from "@mui/lab/TabContext";
 import MuiTabList from "@mui/lab/TabList";
 import TabAccount from "./TabAccount";
-import TabBilling from "./TabBilling";
 import TabSecurity from "./TabSecurity";
 import TabOrders from "./TabOrders";
 import TabAddresses from "./TabAddresses";
@@ -53,7 +51,6 @@ const AccountSettings = ({ tab, apiPricingPlanData }) => {
   const tabContentList = {
     account: <TabAccount />,
     security: <TabSecurity />,
-    billing: <TabBilling apiPricingPlanData={apiPricingPlanData} />,
     orders: <TabOrders />,
     addresses: <TabAddresses />,
   };
@@ -96,20 +93,6 @@ const AccountSettings = ({ tab, apiPricingPlanData }) => {
                         }}
                       >
                         {!hideText && t("Security")}
-                      </Box>
-                    }
-                  />
-                  <Tab
-                    value="billing"
-                    label={
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          ...(!hideText && { "& svg": { mr: 1 } }),
-                        }}
-                      >
-                        {!hideText && t("Billing")}
                       </Box>
                     }
                   />

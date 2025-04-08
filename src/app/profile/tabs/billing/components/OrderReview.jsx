@@ -1,4 +1,11 @@
-import { Cancel, CheckCircle, Done, LocalShipping, Pending, Sync } from "@mui/icons-material";
+import {
+  Cancel,
+  CheckCircle,
+  Done,
+  LocalShipping,
+  Pending,
+  Sync,
+} from "@mui/icons-material";
 import {
   Box,
   Chip,
@@ -17,7 +24,6 @@ import { useTranslation } from "react-i18next";
 import theme from "theme/theme";
 
 const OrderReview = ({ item }) => {
-
   const { t } = useTranslation("index");
 
   const columns = useMemo(() => {
@@ -25,7 +31,7 @@ const OrderReview = ({ item }) => {
   }, [t]);
 
   const rows = useMemo(() => {
-    return item?.lines?.map((order) => (
+    return item?.lines?.slice(0, -1).map((order) => (
       <TableRow key={order.id}>
         <TableCell>{order.description}</TableCell> {/* Product */}
         <TableCell>{order.unit_price.value}</TableCell> {/* Price */}
@@ -34,7 +40,7 @@ const OrderReview = ({ item }) => {
       </TableRow>
     ));
   }, [item]);
-  
+
   const getStatusDetails = (status) => {
     switch (status) {
       case "order_requested":
@@ -69,8 +75,16 @@ const OrderReview = ({ item }) => {
 
   return (
     <Box p={isMobile ? 1 : 3}>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
-        <Typography variant={isMobile ? "h6" : "h4"} sx={{ color: "text.main" }}>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb={1}
+      >
+        <Typography
+          variant={isMobile ? "h6" : "h4"}
+          sx={{ color: "text.main" }}
+        >
           {t("Order")} #{item?.reference ?? "N/A"}
         </Typography>
 
@@ -93,13 +107,18 @@ const OrderReview = ({ item }) => {
       </Box>
 
       <Typography color="textSecondary" variant="body2">
-        {t("Order Date")}: {item?.order_date ?? "N/A"}
+        {t("Order Date")}: 
+        {new Date(item.lines[0].created_at).toLocaleDateString()}
       </Typography>
 
       <Grid container spacing={isMobile ? 1 : 2} mt={2}>
         <Grid item xs={12} md={8}>
           <Box sx={{ px: 2, overflowX: isMobile ? "auto" : "visible" }}>
-            <Typography variant={isMobile ? "subtitle1" : "h6"} sx={{ color: "text.main" }} gutterBottom>
+            <Typography
+              variant={isMobile ? "subtitle1" : "h6"}
+              sx={{ color: "text.main" }}
+              gutterBottom
+            >
               {t("Products")}
             </Typography>
             <Table>
@@ -120,12 +139,35 @@ const OrderReview = ({ item }) => {
             <Typography variant="h6" gutterBottom>
               {t("Summary")}
             </Typography>
-            <Typography>{t("Subtotal")}: {item?.sub_total ?? "N/A"}</Typography>
+            <Typography>
+              {t("Subtotal")}: {item?.sub_total ?? "N/A"}
+              {t("currency")}
+            </Typography>
             {item?.points_used > 0 && (
-              <Typography>{t("sub total after points")}: {item?.sub_total_after_points ?? "N/A"}</Typography>
+              <Typography>
+                {t("sub total after points")}:{" "}
+                {item?.sub_total_after_points ?? "N/A"}
+                {t("currency")}
+              </Typography>
             )}
-            {item?.tax_total && <Typography>{t("Tax")}: {item?.tax_total ?? "N/A"}</Typography>}
-            {item?.total && <Typography>{t("Total")}: {item?.total ?? "N/A"}</Typography>}
+            {item?.shipping_total && (
+              <Typography>
+                {t("Shipping")}: {item?.shipping_total ?? "N/A"}
+                {t("currency")}
+              </Typography>
+            )}
+            {item?.tax_total && (
+              <Typography>
+                {t("Tax")}: {item?.tax_total ?? "N/A"}
+                {t("currency")}
+              </Typography>
+            )}
+            {item?.total && (
+              <Typography>
+                {t("Total")}: {item?.total ?? "N/A"}
+                {t("currency")}
+              </Typography>
+            )}
           </Box>
         </Grid>
 
@@ -133,31 +175,49 @@ const OrderReview = ({ item }) => {
           <Box sx={{ p: isMobile ? 1 : 2, color: "text.main" }}>
             <Typography variant="body1">{t("Shipping Address")}</Typography>
             <Typography variant="subtitle1" sx={{ color: "text.secondary" }}>
-              {item?.address?.find((addr) => addr.type === "shipping")?.line_one}, {item?.address?.find((addr) => addr.type === "shipping")?.city}, {item?.address?.find((addr) => addr.type === "shipping")?.state}, {item?.address?.find((addr) => addr.type === "shipping")?.postcode}
+              {
+                item?.address?.find((addr) => addr.type === "shipping")
+                  ?.line_one
+              }
+              , {item?.address?.find((addr) => addr.type === "shipping")?.city},{" "}
+              {item?.address?.find((addr) => addr.type === "shipping")?.state},{" "}
+              {
+                item?.address?.find((addr) => addr.type === "shipping")
+                  ?.postcode
+              }
             </Typography>
             <Typography variant="subtitle1" sx={{ color: "text.secondary" }}>
-              {t("Contact Email")}: {item?.address?.find((addr) => addr.type === "shipping")?.contact_email ?? "N/A"}
+              {t("Contact Email")}:{" "}
+              {item?.address?.find((addr) => addr.type === "shipping")
+                ?.contact_email ?? "N/A"}
             </Typography>
             <Typography variant="subtitle1" sx={{ color: "text.secondary" }}>
-              {t("Contact Phone")}: {item?.address?.find((addr) => addr.type === "shipping")?.contact_phone ?? "N/A"}
+              {t("Contact Phone")}:{" "}
+              {item?.address?.find((addr) => addr.type === "shipping")
+                ?.contact_phone ?? "N/A"}
             </Typography>
           </Box>
         </Grid>
 
-        <Grid item xs={12} md={4}>
+        {/* <Grid item xs={12} md={4}>
           <Box sx={{ p: isMobile ? 1 : 2, color: "text.main" }}>
             <Typography variant="body1">{t("Billing Address")}</Typography>
             <Typography variant="subtitle1" sx={{ color: "text.secondary" }}>
-              {item?.address?.find((addr) => addr.type === "billing")?.line_one ?? "N/A"}
+              {item?.address?.find((addr) => addr.type === "billing")
+                ?.line_one ?? "N/A"}
             </Typography>
             <Typography variant="subtitle1" sx={{ color: "text.secondary" }}>
-              {t("Contact Email")}: {item?.address?.find((addr) => addr.type === "billing")?.contact_email ?? "N/A"}
+              {t("Contact Email")}:{" "}
+              {item?.address?.find((addr) => addr.type === "billing")
+                ?.contact_email ?? "N/A"}
             </Typography>
             <Typography variant="subtitle1" sx={{ color: "text.secondary" }}>
-              {t("Contact Phone")}: {item?.address?.find((addr) => addr.type === "billing")?.contact_phone ?? "N/A"}
+              {t("Contact Phone")}:{" "}
+              {item?.address?.find((addr) => addr.type === "billing")
+                ?.contact_phone ?? "N/A"}
             </Typography>
           </Box>
-        </Grid>
+        </Grid> */}
       </Grid>
     </Box>
   );

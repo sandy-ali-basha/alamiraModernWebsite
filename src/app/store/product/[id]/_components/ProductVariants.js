@@ -23,7 +23,7 @@ const ProductVariants = ({ variants }) => {
   // Extract unique colors
   const colors = [
     ...new Set(
-      variants.map((v) => (v.options > 0 ? v.options[0].name.ar : ""))
+      variants.map((v) => (v.options.length > 0 ? v.options[0].name.ar : ""))
     ),
   ];
 
@@ -38,7 +38,7 @@ const ProductVariants = ({ variants }) => {
       ]
     : [];
 
-  // Get the matching variant ID
+  // Get the matching variant object
   const selectedVariant = variants.find(
     (v) =>
       v.options[0].name.ar === selectedColor &&
@@ -46,7 +46,7 @@ const ProductVariants = ({ variants }) => {
   );
 
   const handleCartClick = () => {
-    if (!selectedColor || !selectedSize) {
+    if (!selectedColor || !selectedSize || !selectedVariant) {
       setShake(true);
       Swal.fire({
         icon: "warning",
@@ -59,15 +59,20 @@ const ProductVariants = ({ variants }) => {
       setTimeout(() => setShake(false), 500);
       return;
     }
-
+    // const cartData = {
+    //   product_id: params.id,
+    //   options: [selectedVariant.options[0].id, selectedVariant.options[1].id],
+    // };
     const cartData = {
-      product_id: params.id,
-      options: [
-        {
-          size: [selectedVariant.options[0].id],
-          color: [selectedVariant.options[1].id],
+      products: {
+        [params.id]: {
+          qty: 1,
+          options: [
+            selectedVariant.options[0].id,
+            selectedVariant.options[1].id,
+          ],
         },
-      ],
+      },
     };
 
     handleAddToCart(cartData);
@@ -80,12 +85,7 @@ const ProductVariants = ({ variants }) => {
         animate={shake ? { x: [-10, 10, -10, 10, 0] } : {}}
         transition={{ duration: 0.6 }}
       >
-        <Typography
-          sx={{ py: 2 }}
-          color="initial"
-          variant="body1"
-          fontWeight="bold"
-        >
+        <Typography sx={{ py: 2 }} fontWeight="bold">
           {t("Select Color")}:
         </Typography>
         <Stack direction="row" spacing={1}>
@@ -103,12 +103,7 @@ const ProductVariants = ({ variants }) => {
           ))}
         </Stack>
 
-        <Typography
-          sx={{ py: 2 }}
-          color="initial"
-          variant="body1"
-          fontWeight="bold"
-        >
+        <Typography sx={{ py: 2 }} fontWeight="bold">
           {t("Select Size")}:
         </Typography>
         {sizes.length > 0 ? (
@@ -124,7 +119,7 @@ const ProductVariants = ({ variants }) => {
             ))}
           </Stack>
         ) : (
-          <Typography color="text.secondary" variant="body1">
+          <Typography color="text.secondary">
             {t("select color first")}
           </Typography>
         )}

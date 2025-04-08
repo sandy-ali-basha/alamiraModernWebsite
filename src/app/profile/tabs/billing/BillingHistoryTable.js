@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import { DataGrid } from "@mui/x-data-grid";
 import {
@@ -34,6 +34,9 @@ import { _axios } from "interceptor/http-config";
 import Swal from "sweetalert2";
 import theme from "theme/theme";
 import { useQueryClient } from "react-query";
+import OrderSuccessPopup from "./components/OrderSuccessPopup";
+import { useLocation } from "react-router-dom";
+import OrderFailedPopup from "./components/OrderFailedPopup";
 
 const LinkStyled = styled(Link)(({ theme }) => ({
   textDecoration: "none",
@@ -48,6 +51,21 @@ const BillingHistoryTable = () => {
   const [open, setOpen] = useState(false); // State for controlling modal visibility
   const { t } = useTranslation("index");
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const location = useLocation();
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
+  const [showFailedPopup, setShowFailedPopup] = useState(false);
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const isSuccess = searchParams.get("success");
+    if (isSuccess === "true") {
+      setShowSuccessPopup(true);
+    }
+    const isFailed = searchParams.get("failed");
+    if (isFailed === "true") {
+      setShowFailedPopup(true);
+    }
+  }, [location.search]);
 
   const queryClient = useQueryClient();
 
@@ -74,7 +92,7 @@ const BillingHistoryTable = () => {
               text: t(
                 "Your order cancellation has been requested and needs acceptance."
               ),
-              confirmButtonText: "Okay",
+              confirmButtonText: t("Okay"),
             });
           })
           .catch((error) => {
@@ -118,100 +136,6 @@ const BillingHistoryTable = () => {
         return { label: t("Unknown"), color: "default", icon: null };
     }
   };
-
-  const defaultColumns = (handleOrderClick) => [
-    {
-      flex: 0.1,
-      field: "reference",
-      minWidth: 100,
-      headerName: t("Order Reference"), // Correct property
-      renderCell: ({ row }) => (
-        <Typography
-          component={LinkStyled}
-          href={`/apps/invoice/preview/${row.reference}`}
-        >
-          {`#${row.reference}`}
-        </Typography>
-      ),
-    },
-    {
-      flex: 0.1,
-      minWidth: 200,
-      field: "status",
-      headerName: t("Order Status"), // Replaced renderHeader with headerName
-      renderCell: ({ row }) => {
-        const { label, color, icon } = getStatusDetails(row?.status);
-        return (
-          <Tooltip title={label}>
-            <Chip
-              label={label}
-              icon={icon}
-              color={color}
-              variant="outlined"
-              sx={{
-                minWidth: 120,
-                fontWeight: "bold",
-                fontSize: "0.875rem",
-                justifyContent: "start",
-              }}
-            />
-          </Tooltip>
-        );
-      },
-    },
-    {
-      flex: 0.15,
-      minWidth: 100,
-      field: "issuedDate",
-      headerName: t("Issued Date"),
-      renderCell: ({ row }) => (
-        <Typography sx={{ color: "text.secondary" }}>
-          {new Date(row.lines[0].created_at).toLocaleDateString()}
-        </Typography>
-      ),
-    },
-    {
-      flex: 0.2,
-      minWidth: 160,
-      field: "lines",
-      headerName: t("Order Items"),
-      renderCell: ({ row }) => (
-        <Typography sx={{ color: "text.secondary" }}>
-          {row.lines.map((line) => line.description).join(", ")}
-        </Typography>
-      ),
-    },
-    {
-      flex: 0.1,
-      minWidth: 100,
-      field: "sub_total",
-      headerName: t("total"),
-      renderCell: ({ row }) => (
-        <Typography sx={{ color: "text.secondary" }}>
-          {row.total.toLocaleString()} {t("currency")}
-        </Typography>
-      ),
-    },
-    {
-      field: "actions",
-      headerName: t("View"),
-      flex: 0.1,
-      minWidth: 100,
-      renderCell: ({ row }) => (
-        <>
-          {row?.canCancel && (
-            <IconButton onClick={() => handleCancel(row?.id)}>
-              <DeleteRounded />
-            </IconButton>
-          )}
-          <IconButton onClick={() => handleOrderClick(row)}>
-            <Eye />
-          </IconButton>
-        </>
-      ),
-    },
-  ];
-
   const { data, isLoading, error } = useOrders();
 
   const handleOrderClick = (order) => {
@@ -235,81 +159,95 @@ const BillingHistoryTable = () => {
 
   return (
     <Card>
+      <OrderSuccessPopup
+        open={showSuccessPopup}
+        onClose={() => setShowSuccessPopup(false)}
+      />
+      <OrderFailedPopup
+        open={showFailedPopup}
+        onClose={() => {
+          setShowFailedPopup(false);
+        }}
+      />
       <CardHeader title={t("Orders History")} />
       <CardContent sx={{ pb: 4 }}></CardContent>
       {isLoading && <Typography sx={{ p: 5 }}>{t("Loading")}...</Typography>}
       {error && (
         <Typography color="error">{t("Error loading data")}.</Typography>
       )}
-      {data?.data &&
-        (isMobile ? (
-          // Mobile view using Card layout
-          <Grid container spacing={2} sx={{ p: 2 }}>
-            {filteredRows.map((order) => {
-              const { label, color, icon } = getStatusDetails(order.status);
-              return (
-                <Grid item xs={12} key={order.reference}>
-                  <Card variant="outlined">
-                    <CardContent>
-                      <Typography variant="h6">
-                        {t("Order Reference")}: #{order.reference}
-                      </Typography>
-                      <Typography sx={{ color: "text.secondary" }}>
-                        {t("Issued Date")}:{" "}
-                        {new Date(
-                          order.lines[0].created_at
-                        ).toLocaleDateString()}
-                      </Typography>
-                      <Typography sx={{ color: "text.secondary" }}>
-                        {t("Order Items")}:{" "}
-                        {order.lines.map((line) => line.description).join(", ")}
-                      </Typography>
-                      <Typography sx={{ color: "text.secondary" }}>
-                        {t("Total")}: {order.total.toLocaleString()} {t("currency")}
-                      </Typography>
-                      <Tooltip title={label}>
-                        <Chip
-                          label={label}
-                          icon={icon}
-                          color={color}
-                          variant="outlined"
-                          sx={{
-                            mt: 1,
-                            minWidth: 120,
-                            fontWeight: "bold",
-                            fontSize: "0.875rem",
-                          }}
-                        />
-                      </Tooltip>
-                      <IconButton
-                        onClick={() => handleCancel(order.id)}
-                        color="error"
-                      >
-                        <DeleteRounded />
-                      </IconButton>
-                      <IconButton
-                        onClick={() => handleOrderClick(order)}
-                        color="primary"
-                      >
-                        <Eye />
-                      </IconButton>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              );
-            })}
-          </Grid>
-        ) : (
-          // Desktop view using DataGrid
-          <DataGrid
-            sx={{ mx: 2 }}
-            autoHeight
-            rows={filteredRows}
-            columns={defaultColumns(handleOrderClick)}
-            disableRowSelectionOnClick
-            getRowId={(row) => row.reference}
-          />
-        ))}
+      <Grid container spacing={2} sx={{ p: 2 }}>
+        {filteredRows.map((order) => {
+          const { label, color, icon } = getStatusDetails(order.status);
+          return (
+            <Grid item xs={12} key={order.reference}>
+              <Card variant="outlined">
+                <CardContent
+                  sx={{
+                    display: "flex",
+                    flexDirection: isMobile ? "column" : "row",
+                    justifyContent: "space-between",
+                    alignItems: isMobile ? "flex-start" : "center",
+                    gap: 2,
+                    flexWrap: "wrap",
+                  }}
+                >
+                  <div>
+                    <Typography variant="h6">
+                      {t("Order Reference")}: #{order.reference}
+                    </Typography>
+                    <Typography sx={{ color: "text.secondary" }}>
+                      {t("Issued Date")}:{" "}
+                      {new Date(order.lines[0].created_at).toLocaleDateString()}
+                    </Typography>
+                    <Typography sx={{ color: "text.secondary" }}>
+                      {t("Order Items")}:{" "}
+                      {order.lines.map((line) => line.description).join(", ")}
+                    </Typography>
+                    <Typography sx={{ color: "text.secondary" }}>
+                      {t("Total")}: {order.total.toLocaleString()}{" "}
+                      {t("currency")}
+                    </Typography>
+                  </div>
+
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      flexWrap: "wrap",
+                      gap: 8,
+                    }}
+                  >
+                    <Tooltip title={label}>
+                      <Chip
+                        label={label}
+                        icon={icon}
+                        color={color}
+                        variant="outlined"
+                        sx={{
+                          fontWeight: "bold",
+                          fontSize: "0.875rem",
+                        }}
+                      />
+                    </Tooltip>
+                    <IconButton
+                      onClick={() => handleCancel(order.id)}
+                      color="error"
+                    >
+                      <DeleteRounded />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => handleOrderClick(order)}
+                      color="primary"
+                    >
+                      <Eye />
+                    </IconButton>
+                  </div>
+                </CardContent>
+              </Card>
+            </Grid>
+          );
+        })}
+      </Grid>
 
       {/* Order Review Modal */}
       <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">

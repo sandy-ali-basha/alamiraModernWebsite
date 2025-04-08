@@ -1,7 +1,7 @@
 import create from "zustand";
 
 export const ValueStore = create((set) => ({
-  value: 'credit-card',
+  value: 'paypal',
   setValue: (id) => {
     set(() => ({ value: id }));
   },

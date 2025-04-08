@@ -191,12 +191,7 @@ const StepCart = ({ handleNext }) => {
                               to={`/store/product/${item?.id}/${item.name}`}
                               style={{ textDecoration: "none" }}
                             >
-                              <ListItemText
-                                primary={
-                                  item?.name.split(" ").slice(0, 7).join(" ") +
-                                  " ..."
-                                }
-                              />
+                              <ListItemText primary={item?.name} />
                             </Link>
                             <Box sx={{ display: "flex", alignItems: "center" }}>
                               {item?.compare_price > 0 && (
