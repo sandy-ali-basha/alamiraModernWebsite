@@ -299,4 +299,6 @@
   "Payment Failed": "Ödeme Başarısız",
   "Something went wrong while processing your payment. Please try again.": "Ödemeniz işlenirken bir şeyler ters gitti. Lütfen tekrar deneyin.",
   "Close": "Kapat",
-"You will be redirected to PayPal to complete your purchase securely.":"Güvenli bir şekilde satın alma işleminizi tamamlamak için PayPal'a yönlendirileceksiniz."}
+"You will be redirected to PayPal to complete your purchase securely.":"Güvenli bir şekilde satın alma işleminizi tamamlamak için PayPal'a yönlendirileceksiniz.",
+"Please remove out of stock items first":"Lütfen önce stokta olmayan ürünleri çıkarın"
+}

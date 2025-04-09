@@ -306,4 +306,5 @@
   "Something went wrong while processing your payment. Please try again.": "حدث خطأ أثناء معالجة الدفع. يرجى المحاولة مرة أخرى.",
   "Close": "إغلاق",
   "You will be redirected to PayPal to complete your purchase securely.":"سيتم توجيهك إلى PayPal لإكمال عملية الشراء بأمان."
-}
+,
+"Please remove out of stock items first":" يرجى إزالة العناصر غير المتوفرة أولاً"}

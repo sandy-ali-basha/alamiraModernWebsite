@@ -19,8 +19,7 @@ export const useNavBar = () => {
       label: t("Change Password"),
       onClick: () => navigate("/profile/security"),
     },
-    { id: 4, label: t("Billing"), onClick: () => navigate("/profile/billing") },
-    {
+   {
       id: 6,
       label: t("My Orders"),
       onClick: () => navigate("/profile/orders"),

@@ -37,7 +37,7 @@ const StepAddress = ({
   // const [selectedIconRadio, setSelectedIconRadio] = useState("standard");
   const { data = { addresses: [] }, isLoading } = useAddresses();
   const { t } = useTranslation("index");
-  
+
   const addresses = data?.addresses || [];
 
   const addressData = addresses.map((address, index) => ({
@@ -185,6 +185,13 @@ const StepAddress = ({
                                 primary={
                                   item?.name.split(" ").slice(0, 7).join(" ") +
                                   " ..."
+                                }
+                              />
+                              <ListItemText
+                                primary={
+                                  item?.options[0].name +
+                                  " " +
+                                  item?.options[1].name
                                 }
                               />
                             </Link>

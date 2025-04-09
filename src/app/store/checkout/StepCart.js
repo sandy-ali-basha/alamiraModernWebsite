@@ -27,6 +27,7 @@ import Swal from "sweetalert2";
 import ApplyCoupon from "./_components/ApplyCoupon";
 import emptyCart from "assets/images/empty-cart.png";
 import Simillar from "../product/[id]/_components/Simllar";
+import { useState } from "react";
 
 const StyledList = styled(List)(({ theme }) => ({
   padding: 0,
@@ -59,6 +60,7 @@ const StepCart = ({ handleNext }) => {
   const { data, isLoading } = useCart(cart_id);
   const queryClient = useQueryClient();
   const userData = localStorage.getItem("userData");
+  const [outOfStock, setOutOfStock] = useState(false);
   const handleDeleteItem = (id) => {
     _cart.delete({ id, cart_id }).then((res) => {
       // Invalidate the "cart" query to refetch the updated cart data
@@ -156,116 +158,131 @@ const StepCart = ({ handleNext }) => {
                   </ListItem>
                 ) : (
                   data?.data?.products?.length > 0 &&
-                  data?.data?.products?.map((item, idx) => (
-                    <>
-                      <ListItem key={idx} sx={{ my: 2 }}>
-                        <ListItemAvatar
-                          key={item?.product_id}
-                          sx={{
-                            display: "flex",
-                            width: { md: "15%", xs: "25%" },
-                          }}
-                        >
-                          <img
-                            style={{
-                              width: "100%",
-                              aspectRatio: 3 / 4,
-                              objectFit: "cover",
-                              borderRadius: "inherit",
+                  data?.data?.products?.map((item, idx) => {
+                    if (item?.quantity === 0) setOutOfStock(true);
+                    return (
+                      <>
+                        <ListItem key={idx} sx={{ my: 2 }}>
+                          <ListItemAvatar
+                            key={item?.product_id}
+                            sx={{
+                              display: "flex",
+                              width: { md: "15%", xs: "25%" },
                             }}
-                            src={item?.images[0]?.image_path}
-                            alt={item?.name}
-                          />
-                        </ListItemAvatar>
-                        <IconButton
-                          size="small"
-                          className="remove-item"
-                          sx={{ color: "text.primary" }}
-                          onClick={() => handleDeleteItem(item?.id)}
-                        >
-                          <Icon icon="tabler:x" fontSize={20} />
-                        </IconButton>
-                        <Grid container sx={{ mx: { md: 2, xs: 1 } }}>
-                          <Grid item xs={12} md={8}>
-                            <Link
-                              to={`/store/product/${item?.id}/${item.name}`}
-                              style={{ textDecoration: "none" }}
-                            >
-                              <ListItemText primary={item?.name} />
-                            </Link>
-                            <Box sx={{ display: "flex", alignItems: "center" }}>
-                              {item?.compare_price > 0 && (
-                                <Typography
-                                  variant="body1"
-                                  sx={{
-                                    textDecoration: item?.compare_price
-                                      ? "line-through"
-                                      : "none",
-                                    fontSize: item?.compare_price
-                                      ? "small"
-                                      : "inherit",
-                                  }}
-                                  color={
-                                    item?.compare_price
-                                      ? "text.secondary"
-                                      : "initial"
-                                  }
-                                >
-                                  {item?.compare_price} {t("currency")}
-                                </Typography>
-                              )}
-
-                              {item?.price > 0 && (
-                                <Typography
-                                  variant="body1"
-                                  color="initial"
-                                  sx={{ mx: 2 }}
-                                >
-                                  {item?.price.toLocaleString()} {t("currency")}
-                                </Typography>
-                              )}
-                              <Chip
-                                sx={{ borderRadius: 0 }}
-                                size="small"
-                                skin="light"
-                                variant="outlined"
-                                color={item?.stock > 0 ? "success" : "warning"}
-                                label={
-                                  item?.stock > 10
-                                    ? t("In Stock")
-                                    : item?.stock === 1
-                                    ? t("Only 1 unit left")
-                                    : item?.stock > 1 && item?.stock <= 10
-                                    ? t("Few units left")
-                                    : t("Out Of Stock")
-                                }
-                              />
-                            </Box>
-                          </Grid>
-                          <Grid item xs={12} md={4} sx={{ mt: [1, 2, 4] }}>
-                            <Box
-                              sx={{
-                                gap: 1,
-                                height: "100%",
-                                display: "flex",
-                                flexDirection: "column",
-                                justifyContent: "center",
-                                alignItems: "flex-end",
+                          >
+                            <img
+                              style={{
+                                width: "100%",
+                                aspectRatio: 3 / 4,
+                                objectFit: "cover",
+                                borderRadius: "inherit",
                               }}
-                            >
-                              <QuantityInput
-                                productID={item?.id}
-                                quantity={item?.quantity}
-                                max={item?.stock}
-                                cartID={cart_id}
-                              />
-                            </Box>
+                              src={item?.images[0]?.image_path}
+                              alt={item?.name}
+                            />
+                          </ListItemAvatar>
+                          <IconButton
+                            size="small"
+                            className="remove-item"
+                            sx={{ color: "text.primary" }}
+                            onClick={() => handleDeleteItem(item?.id)}
+                          >
+                            <Icon icon="tabler:x" fontSize={20} />
+                          </IconButton>
+                          <Grid container sx={{ mx: { md: 2, xs: 1 } }}>
+                            <Grid item xs={12} md={8}>
+                              <Link
+                                to={`/store/product/${item?.id}/${item.name}`}
+                                style={{ textDecoration: "none" }}
+                              >
+                                <ListItemText primary={item?.name} />
+                                <ListItemText
+                                  primary={
+                                    item?.options[0].name +
+                                    " " +
+                                    item?.options[1].name
+                                  }
+                                />
+                              </Link>
+                              <Box
+                                sx={{ display: "flex", alignItems: "center" }}
+                              >
+                                {item?.compare_price > 0 && (
+                                  <Typography
+                                    variant="body1"
+                                    sx={{
+                                      textDecoration: item?.compare_price
+                                        ? "line-through"
+                                        : "none",
+                                      fontSize: item?.compare_price
+                                        ? "small"
+                                        : "inherit",
+                                    }}
+                                    color={
+                                      item?.compare_price
+                                        ? "text.secondary"
+                                        : "initial"
+                                    }
+                                  >
+                                    {item?.compare_price} {t("currency")}
+                                  </Typography>
+                                )}
+
+                                {item?.price > 0 && (
+                                  <Typography
+                                    variant="body1"
+                                    color="initial"
+                                    sx={{ mx: 2 }}
+                                  >
+                                    {item?.price.toLocaleString()}{" "}
+                                    {t("currency")}
+                                  </Typography>
+                                )}
+                                <Chip
+                                  sx={{ borderRadius: 0 }}
+                                  size="small"
+                                  skin="light"
+                                  variant="outlined"
+                                  color={
+                                    item?.quantity > 0 ? "success" : "warning"
+                                  }
+                                  label={
+                                    item?.quantity > 10
+                                      ? t("In Stock")
+                                      : item?.quantity === 1
+                                      ? t("Only 1 unit left")
+                                      : item?.quantity > 1 && item?.stock <= 10
+                                      ? t("Few units left")
+                                      : t("Out Of Stock")
+                                  }
+                                />
+                              </Box>
+                            </Grid>
+                            <Grid item xs={12} md={4} sx={{ mt: [1, 2, 4] }}>
+                              <Box
+                                sx={{
+                                  gap: 1,
+                                  height: "100%",
+                                  display: "flex",
+                                  flexDirection: "column",
+                                  justifyContent: "center",
+                                  alignItems: "flex-end",
+                                }}
+                              >
+                                <QuantityInput
+                                  productID={item?.id}
+                                  quantity={item?.quantity}
+                                  max={item?.stock}
+                                  cartID={cart_id}
+                                />
+                              </Box>
+                            </Grid>
                           </Grid>
-                        </Grid>
-                      </ListItem>
-                      <Divider />
-                    </>
-                  ))
+                        </ListItem>
+                        <Divider />
+                      </>
+                    );
+                  })
                 )}
               </StyledList>
             </>
@@ -410,9 +427,13 @@ const StepCart = ({ handleNext }) => {
                 variant="outlined"
                 onClick={handleNext}
                 color="secondary"
-                disabled={!userData}
+                disabled={!userData || outOfStock}
               >
-                {userData ? t("Place Order") : t("pleas Log in to order")}
+                {outOfStock
+                  ? t("pleas remove out of stock items first")
+                  : userData
+                  ? t("Place Order")
+                  : t("pleas Log in to order")}
               </Button>
             </Box>
           </Grid>
